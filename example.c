@@ -1,40 +1,37 @@
-#include <stddef.h>
-#include <complex.h>
-#include "fft.h"
-#include "ift.h"
 #include <stdio.h>
+#include "uFFT.h"
 
-int main()
-{
-	size_t N = 1<<3;
+int main() {
+    size_t N = 1 << 3;
 
-	float complex vector[N];
+    fft_complex vector[N];
 
-	for(size_t n = 0; n < N; n++) {
-		vector[n] = n;
-	}
+    for (size_t n = 0; n < N; n++) {
+        vector[n].real = n;
+        vector[n].imag = 0;
+    }
 
-	printf("in time domain:\n");
+    printf("in time domain:\n");
 
-	for(size_t n = 0; n < N; n++) {
-		printf("%f%+fi\n", creal(vector[n]), cimag(vector[n]));
-	}
+    for (size_t n = 0; n < N; n++) {
+        printf("%f %+f\n", vector[n].real, vector[n].imag);
+    }
 
-	fft(vector, N);
+    fft(vector, N);
 
-	printf("in frequency domain:\n");
+    printf("in frequency domain:\n");
 
-	for(size_t n = 0; n < N; n++) {
-		printf("%f%+fi\n", creal(vector[n]), cimag(vector[n]));
-	}
+    for (size_t n = 0; n < N; n++) {
+        printf("%f %+f\n", vector[n].real, vector[n].imag);
+    }
 
-	ift(vector, N);
+    ifft(vector, N);
 
-	printf("in time domain:\n");
+    printf("in time domain:\n");
 
-	for(size_t n = 0; n < N; n++) {
-		printf("%f%+fi\n", creal(vector[n]), cimag(vector[n]));
-	}
+    for (size_t n = 0; n < N; n++) {
+        printf("%f %+f\n", vector[n].real, vector[n].imag);
+    }
 
-	return 0;
+    return 0;
 }

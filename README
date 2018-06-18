@@ -1,11 +1,11 @@
-uFFT is a small portable C library for computing the discrete Fourier transform
+uFFT is a small portable C library for fast computing the discrete Fourier transform
 (DFT) in one dimension.
 
 The library implements forward and inverse fast Fourier transform (FFT)
 algorithms using both decimation in time (DIT) and decimation in frequency
 (DIF).
 
-The library is written in pure C99. No compiler extensions nor assembly language
+The library is written in pure C. No compiler extensions nor assembly language
 are employed. It uses floating point data type and can handle unaligned data.
 The FFT routines can be easily modified since their source code has less than a
 hundred lines. As you might expect, the uFFT performance does not outperform the
