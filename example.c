@@ -10,7 +10,6 @@ int main() {
         vector[n].real = n;
         vector[n].imag = 0;
     }
-
     printf("in time domain:\n");
 
     for (size_t n = 0; n < N; n++) {

@@ -3,10 +3,56 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-
 #ifndef TWO_PI
 #define TWO_PI        (2.0f*3.14159265358979323846f)
 #endif
+
+
+#define  FAST_MATH
+#ifdef FAST_MATH
+
+static float fastAbs(float f) {
+    int i = ((*(int *) &f) & 0x7fffffff);
+    return (*(float *) &i);
+}
+
+#endif
+
+static float fastSin(float x) {
+
+#ifdef FAST_MATH
+    const float pi = 3.14159265358979323846f;
+    const float B = 4 / pi;
+    const float C = -4 / (pi * pi);
+    const float P = 0.224008178776f;
+    const float Q = 0.775991821224f;
+    float y = (B + C * fastAbs(x)) * x;
+    return (Q + P * fastAbs(y)) * y;
+#else
+    return sinf(x);
+#endif
+}
+
+
+static float fastCos(float x) {
+#ifdef FAST_MATH
+    const float pi = 3.14159265358979323846f;
+    const float P = 0.224008178776f;
+    const float Q = 0.775991821224f;
+    const float pi_2 = pi * 0.5f;
+    const float twopi = 2 * pi;
+    const float B = 4 / pi;
+    const float C = -4 / (pi * pi);
+    x += pi_2;
+    if (x > pi) {
+        x -= twopi;
+    }
+    float y = (B + C * fastAbs(x)) * x;
+    return (Q + P * fastAbs(y)) * y;
+#else
+    return sinf(x);
+#endif
+}
 
 static int ctz(size_t N) {
     int ctz1 = 0;
@@ -44,8 +90,8 @@ static void nop_split(const fft_complex *x, fft_complex *X, size_t N) {
 static void fft_split(const fft_complex *x, fft_complex *X, size_t N, float phi) {
     float t = (-TWO_PI) * phi;
     fft_complex cexp;
-    cexp.real = cosf(t);
-    cexp.imag = sinf(t);
+    cexp.real = fastCos(t);
+    cexp.imag = fastSin(t);
     fft_complex val;
     size_t halfOfN = N >> 1;
     const fft_complex *px = x;
@@ -67,8 +113,8 @@ static void fft_split(const fft_complex *x, fft_complex *X, size_t N, float phi)
 static void ifft_split(const fft_complex *x, fft_complex *X, size_t N, float phi) {
     float t = TWO_PI * phi;
     fft_complex cexp;
-    cexp.real = cosf(t);
-    cexp.imag = sinf(t);
+    cexp.real = fastCos(t);
+    cexp.imag = fastSin(t);
     fft_complex val;
     size_t halfOfN = N >> 1;
     const fft_complex *px = x;
@@ -142,8 +188,8 @@ static void nop_split(const fft_complex *x, fft_complex *X, size_t N) {
 static void fft_split(const fft_complex *x, fft_complex *X, size_t N, float phi) {
     float t = (-TWO_PI) * phi;
     fft_complex cexp;
-    cexp.real = cosf(t);
-    cexp.imag = sinf(t);
+    cexp.real = fastCos(t);
+    cexp.imag = fastSin(t);
     fft_complex val;
     size_t halfOfN = N >> 1;
     const fft_complex *px = x;
@@ -165,8 +211,8 @@ static void fft_split(const fft_complex *x, fft_complex *X, size_t N, float phi)
 static void ifft_split(const fft_complex *x, fft_complex *X, size_t N, float phi) {
     float t = TWO_PI * phi;
     fft_complex cexp;
-    cexp.real = cosf(t);
-    cexp.imag = sinf(t);
+    cexp.real = fastCos(t);
+    cexp.imag = fastSin(t);
     fft_complex val;
     size_t halfOfN = N >> 1;
     const fft_complex *px = x;

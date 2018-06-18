@@ -9,6 +9,7 @@ typedef struct {
 } fft_complex;
 
 //#define  USE_DIF
+#define FAST_MATH
 
 /**
  * @brief FFT algorithm (forward transform)
