@@ -50,7 +50,7 @@ static float fastCos(float x) {
     float y = (B + C * fastAbs(x)) * x;
     return (Q + P * fastAbs(y)) * y;
 #else
-    return sinf(x);
+    return cosf(x);
 #endif
 }
 
